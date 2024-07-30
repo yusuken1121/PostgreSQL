@@ -22,6 +22,20 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = await pool.query<Product>(
+      "SELECT * FROM products WHERE id = $1",
+      [id]
+    );
+    res.status(200).json(data.rows);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).send("Server error");
+  }
+});
+
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { title, price, description, category } = req.body;
@@ -32,6 +46,27 @@ router.post("/", async (req: Request, res: Response) => {
         RETURNING *
       `,
       [title, price, description, category]
+    );
+    res.status(201).json(data.rows);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+router.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, price, description, category } = req.body;
+
+    const data = await pool.query(
+      `
+        UPDATE products
+        SET title = $1, price = $2, description = $3, category = $4
+        WHERE id = $5
+        RETURNING *
+      `,
+      [title, price, description, category, id]
     );
     res.status(201).json(data.rows);
   } catch (error) {
