@@ -74,3 +74,20 @@ router.put("/:id", async (req: Request, res: Response) => {
     res.status(500).send("Server error");
   }
 });
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = await pool.query(
+      `
+      DELETE FROM products
+      WHERE id = $1
+      `,
+      [id]
+    );
+    res.status(201).json(data.rows);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).send("Server error");
+  }
+});
