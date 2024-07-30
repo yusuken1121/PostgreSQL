@@ -29,7 +29,7 @@ router.get("/:id", async (req: Request, res: Response) => {
       "SELECT * FROM products WHERE id = $1",
       [id]
     );
-    res.status(200).json(data.rows);
+    res.status(200).json(data.rows[0]);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Server error");
@@ -68,7 +68,7 @@ router.put("/:id", async (req: Request, res: Response) => {
       `,
       [title, price, description, category, id]
     );
-    res.status(201).json(data.rows);
+    res.status(201).json(data.rows[0]);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Server error");
@@ -85,7 +85,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
       `,
       [id]
     );
-    res.status(201).json(data.rows);
+    res.status(201).json(data.rows[0]);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Server error");
