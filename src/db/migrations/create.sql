@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS products CASCADE;
+
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  price INT NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(50) NOT NULL
+);
